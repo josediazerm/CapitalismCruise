@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1snn3h64dqxf"]
+
+[ext_resource type="Texture2D" uid="uid://ccmtqektbunt7" path="res://Graphics/Backgrounds/Def_back.png" id="1_4xehi"]
+[ext_resource type="PackedScene" uid="uid://ckk4xsndr25he" path="res://Scenes/Elements/character.tscn" id="2_lv3tx"]
+
+[node name="ship" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("1_4xehi")
+
+[node name="Character" parent="." instance=ExtResource("2_lv3tx")]
+position = Vector2(445, 698)
