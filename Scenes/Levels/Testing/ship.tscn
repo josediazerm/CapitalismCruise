@@ -1,7 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1snn3h64dqxf"]
+[gd_scene load_steps=6 format=3 uid="uid://b1snn3h64dqxf"]
 
 [ext_resource type="Texture2D" uid="uid://ccmtqektbunt7" path="res://Graphics/Backgrounds/Def_back.png" id="1_4xehi"]
 [ext_resource type="PackedScene" uid="uid://ckk4xsndr25he" path="res://Scenes/Elements/character.tscn" id="2_lv3tx"]
+[ext_resource type="Script" path="res://Scripts/ship_buttons_controller.gd" id="3_40pm4"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_axw1e"]
+vertices = PackedVector2Array(-781, 521, -814, 288, -167, 288, 771, 521, 772, 279, 151, 280, -167, 262, 152, 259, 181, 16, 857, 10, 853, 259, -187, 25, -861, -312, 937, -319, 933, -20, 180, -25, -860, -18, -187, -20, -333, 262, -862, 262, -863, 21, -336, 18, -190, 262)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2, 5), PackedInt32Array(5, 2, 6, 7), PackedInt32Array(8, 9, 10, 7, 11), PackedInt32Array(12, 13, 14, 15), PackedInt32Array(16, 12, 15, 17), PackedInt32Array(18, 19, 20, 21, 11), PackedInt32Array(22, 18, 11), PackedInt32Array(6, 22, 11, 7), PackedInt32Array(17, 15, 8, 11)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-336, 18, -863, 21, -862, 262, -333, 262, -190, 262, -167, 262, -167, 288, -814, 288, -781, 521, 771, 521, 772, 279, 151, 280, 152, 259, 853, 259, 857, 10, 181, 16, 180, -25, 933, -20, 937, -319, -861, -312, -860, -18, -187, -20, -187, 25)])
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_12bgl"]
+size = Vector2(812, 39)
 
 [node name="ship" type="Node2D"]
 
@@ -9,5 +18,62 @@
 position = Vector2(960, 540)
 texture = ExtResource("1_4xehi")
 
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="Background"]
+navigation_polygon = SubResource("NavigationPolygon_axw1e")
+use_edge_connections = false
+
 [node name="Character" parent="." instance=ExtResource("2_lv3tx")]
-position = Vector2(445, 698)
+position = Vector2(1772, 402)
+motion_mode = 1
+wall_min_slide_angle = 0.0
+
+[node name="Buttons" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("3_40pm4")
+character = NodePath("../Character")
+
+[node name="Map" type="Button" parent="Buttons"]
+modulate = Color(1, 1, 1, 0)
+offset_left = 103.0
+offset_top = 565.0
+offset_right = 748.0
+offset_bottom = 794.0
+
+[node name="Controls" type="Button" parent="Buttons"]
+modulate = Color(1, 1, 1, 0)
+offset_left = 1166.0
+offset_top = 562.0
+offset_right = 1811.0
+offset_bottom = 791.0
+
+[node name="Storage" type="Button" parent="Buttons"]
+modulate = Color(1, 1, 1, 0)
+offset_left = 184.0
+offset_top = 827.0
+offset_right = 748.0
+offset_bottom = 1056.0
+
+[node name="Beds" type="Button" parent="Buttons"]
+modulate = Color(1, 1, 1, 0)
+offset_left = 1174.0
+offset_top = 829.0
+offset_right = 1738.0
+offset_bottom = 1058.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(65, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1512, 536.5)
+shape = SubResource("RectangleShape2D_12bgl")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(50, 282)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(1512, 536.5)
+shape = SubResource("RectangleShape2D_12bgl")
+
+[connection signal="pressed" from="Buttons/Map" to="Buttons" method="_on_button_pressed" binds= ["map"]]
+[connection signal="pressed" from="Buttons/Controls" to="Buttons" method="_on_button_pressed" binds= ["control"]]
+[connection signal="pressed" from="Buttons/Storage" to="Buttons" method="_on_button_pressed" binds= ["storage"]]
+[connection signal="pressed" from="Buttons/Beds" to="Buttons" method="_on_button_pressed" binds= ["bed"]]
